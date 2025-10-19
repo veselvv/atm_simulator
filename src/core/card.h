@@ -23,7 +23,7 @@ typedef struct Card{
 
 }Card;
 
-Card *create_card(const char *pin, const char *name, double balance, const char *login, const char *phone_number);
+Card *create_card(const char *pin, const char *name,  const char *login, const char *phone_number);
 void generate_random_cvv(char *cvv_buffer);
 void create_card_number(char *card_number_buffer);
 

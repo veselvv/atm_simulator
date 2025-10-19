@@ -9,7 +9,7 @@
 
 
 Card *create_card(const char *pin,
-    const char *name, double balance, const char *login, const char *phone_number){
+    const char *name,  const char *login, const char *phone_number){
     //memmory for NEw card
     Card *new_card = malloc(sizeof(Card));
 
@@ -25,7 +25,7 @@ Card *create_card(const char *pin,
     new_card->pin_atempts=3;
 
     //Balance
-    new_card->balance = balance;
+    new_card->balance = 0;
 
     //OTHER
     generate_random_cvv(new_card->cvv);
