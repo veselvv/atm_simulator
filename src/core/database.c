@@ -7,12 +7,6 @@
 
 
 
-typedef struct Database{
-    Card **cards;
-    int capacity;
-    int count;   
-}Database;
-
 
 Database *create_database(){
     Database *db = malloc(sizeof(Database));
