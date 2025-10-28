@@ -30,6 +30,9 @@ Card *create_card(const char *pin,
     //OTHER
     generate_random_cvv(new_card->cvv);
     new_card->created_date = time(NULL);
+    generate_expiry_date(new_card->expiry_date);
+
+
     
     return new_card;
 }
@@ -40,6 +43,15 @@ void generate_random_cvv(char *cvv_buffer){
     sprintf(cvv_buffer, "%03d",new_cvv);
 }
 
+void generate_expiry_date(char *expiry_buffer) {
+    time_t now = time(NULL);
+    struct tm *tm_info = localtime(&now);
+    tm_info->tm_year += 4;  
+    tm_info->tm_mon = 11;   
+    tm_info->tm_mday = 31;  
+    strftime(expiry_buffer, 9, "%m/%Y", tm_info);   
+}
+
 void create_card_number(char *card_number_buffer){
     card_number_buffer[0]='4';
     for (int i =1;i<16;i++){
@@ -47,3 +59,18 @@ void create_card_number(char *card_number_buffer){
     }
     card_number_buffer[16] = '\0';
 }
+
+void print_card_info(Card *card){
+    printf("Владелец: %s\n", card->holder_name);
+    printf("Номер карты: %s\n", card->card_number);
+    printf("login: %s\n", card->login);
+    printf("Номер телефона: %s\n", card->phone_number);
+    printf("CVV: %s\n",card->cvv);
+    printf("Баланс: %f\n",card->balance);
+    printf("Срок действия %s\n",card->expiry_date);
+    printf("Статус блокировки: %d\n",card->is_blocked);
+    printf("Осталось количество попыток ввода PIN: %d\n",card->pin_atempts);
+    printf("PIN-код: %s\n",card->pin);
+}
+
+

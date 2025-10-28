@@ -21,5 +21,7 @@ int is_cardNumber_unique(Database * db, const char *CardNumber);
 void update_card_balance(Database * db, const char *CardNumber, const double new_balance);
 void update_card_pin(Database *db, const char *new_pin, const char *CardNumber);
 void update_card_blocked_status(Database *db, int new_is_blocked, const char *CardNumber);
+void printDatabase(Database *db);
+void free_Database(Database *db);
 
 #endif

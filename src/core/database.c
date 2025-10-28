@@ -22,24 +22,23 @@ Database *create_database(){
 void add_new_card_in_database(Database*db){
     char pin[5];
     char name[51];
-    double balance;
     char login[31];
     char phone_number[12];
 
     printf("Введите Pin: ");
-    scanf("%s",pin);
+    scanf("%4s",pin);
     printf("\n");
 
     printf("Введите имя: ");
-    scanf("%s", name);
+    scanf("%50s", name);
     printf("\n");
 
     printf("Введите логин: ");
-    scanf("%s", login);
+    scanf("%30s", login);
     printf("\n");
 
     printf("Введит свой номер телефона в формате 8XXX-XXX-XX-XX: ");
-    scanf("%s",phone_number);
+    scanf("%11s",phone_number);
 
     checkcapacity(db);
 
@@ -52,6 +51,7 @@ void add_new_card_in_database(Database*db){
                 new_card = create_card(pin,name,login,phone_number);
             }
             db->count++;
+            db->cards[i]=new_card;
             break;
         }
     }
@@ -239,4 +239,45 @@ void update_card_blocked_status(Database *db, int new_is_blocked, const char *Ca
         }
     }
     printf("Карта %s не найдена",CardNumber);
+}
+
+
+void printDatabase(Database *db){
+    if (db==NULL){
+        printf("База данных не инициализированна\n");
+        return ;
+    }
+    printf("=========\n");
+    int count =0;
+    for (int i=0; i<db->capacity; i++){
+        if (db->cards[i]!=NULL){
+            printf("Карта %d\n",++count);
+            print_card_info(db->cards[i]);
+        }
+    }
+    if (count==0){
+        printf("База данных пуста!\n");
+    }
+    else{
+        printf("Общее количество карт: %d", count);
+
+    }
+    printf("=========\n");
+}
+
+
+void free_Database(Database *db){
+    if (db==NULL){
+        return ;
+    }
+    if(db->cards!=NULL){
+        for(int i =0; i<db->capacity; i++){
+            if(db->cards[i]!=NULL){
+                free(db->cards[i]);
+                db->cards[i]=NULL;
+            }
+        }
+        free(db->cards);
+    }
+    free(db);
 }

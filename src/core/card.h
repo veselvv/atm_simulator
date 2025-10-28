@@ -15,7 +15,7 @@ typedef struct Card{
     double balance;
 
     //Доп информация
-    char expiry_date[6];
+    char expiry_date[9];
     char cvv[4];
     char phone_number[12];
     char login[31];
@@ -25,6 +25,8 @@ typedef struct Card{
 
 Card *create_card(const char *pin, const char *name,  const char *login, const char *phone_number);
 void generate_random_cvv(char *cvv_buffer);
+void generate_expiry_date(char *expiry_buffer);
 void create_card_number(char *card_number_buffer);
+void print_card_info(Card *card);
 
 #endif
