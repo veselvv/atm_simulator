@@ -39,7 +39,7 @@ void add_new_card_in_database(Database*db){
 
     printf("Введит свой номер телефона в формате 8XXX-XXX-XX-XX: ");
     scanf("%11s",phone_number);
-
+    printf("\n");
     checkcapacity(db);
 
     for(int i = 0; i<db->capacity; i++){
@@ -75,6 +75,8 @@ void add_card_in_db(Database *db, Card * card){
             strcpy(db->cards[i]->holder_name, card->holder_name);
             strcpy(db->cards[i]->login, card->login);
             strcpy(db->cards[i]->phone_number,card->phone_number);
+            strcpy(db->cards[i]->pin,card->pin);
+
             db->count++;
             break;
         }
@@ -88,7 +90,7 @@ void checkcapacity(Database *db){
     if ((db)->count>=(db)->capacity){
         Card **new_cards = realloc(db->cards, sizeof(Card*)*(db->capacity*2));
         if (new_cards==NULL){
-            printf("Не удалось расширить базу данных");
+            printf("Не удалось расширить базу данных\n");
             exit(1);
         }
         for(int i = db->capacity; i<db->capacity*2;i++){
@@ -174,7 +176,7 @@ void remove_card_from_db_by_number(Database *db, const char *CardNumber){
             }
         }
     }
-    printf("карта %s не найдена", CardNumber);
+    printf("карта %s не найдена\n", CardNumber);
 }
 
 
@@ -238,7 +240,7 @@ void update_card_blocked_status(Database *db, int new_is_blocked, const char *Ca
             }
         }
     }
-    printf("Карта %s не найдена",CardNumber);
+    printf("Карта %s не найдена\n",CardNumber);
 }
 
 
