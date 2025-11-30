@@ -39,6 +39,7 @@ cJSON *card_to_json(const Card *card){
     cJSON_AddNumberToObject(card_json, "balance", card->balance);
     cJSON_AddNumberToObject(card_json, "is_blocked", card->is_blocked);
     cJSON_AddNumberToObject(card_json, "pin_atempts",card->pin_atempts);
+    cJSON_AddStringToObject(card_json, "gender",card->gender);
     char date_str[20];
      struct tm* timeinfo = localtime(&card->created_date);
     strftime(date_str, sizeof(date_str), "%Y-%m-%d %H:%M:%S", timeinfo);
@@ -59,6 +60,11 @@ Card *json_to_card(const cJSON *json_card){
     memset(card, 0, sizeof(Card));
     cJSON *item;
 
+
+    item = cJSON_GetObjectItemCaseSensitive(json_card, "gender");
+    if (cJSON_IsString(item) && item->valuestring!=NULL){
+        strncpy(card->gender, item->valuestring, sizeof(card->gender)-1);
+    }
     item = cJSON_GetObjectItemCaseSensitive(json_card, "card_number");
     if (cJSON_IsString(item) && item->valuestring!=NULL){
         strncpy(card->card_number, item->valuestring, sizeof(card->card_number)-1);

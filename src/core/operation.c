@@ -6,7 +6,7 @@
 
 
 
-void transform_balance_by_CardNumber(Database *db, const char *card1, const char *card2, const float balance){
+void transform_balance_by_CardNumber(Database *db, const char *card1, const char *card2, const double balance){
     if (db==NULL|| card1==NULL||card2==NULL){
         printf("Err: Unvalid data\n");
         return;
@@ -42,7 +42,7 @@ void transform_balance_by_CardNumber(Database *db, const char *card1, const char
 
 
 
-void transform_balance_by_PhoneNumber(Database *db, const char *number1, const char *number2, const float balance){
+void transform_balance_by_PhoneNumber(Database *db, const char *number1, const char *number2, const double balance){
     if (db==NULL|| number1==NULL||number2==NULL){
         printf("Err: Unvalid data\n");
         return;
@@ -77,14 +77,7 @@ void transform_balance_by_PhoneNumber(Database *db, const char *number1, const c
 }
 
 
-void replenish_balance(Database *db, const char *number, const float add_money){
-    if(db==NULL||number==NULL){
-        printf("Err:invalid data\n");
-        return;
-    }
-    
-    Card *card = find_card_by_CardNumber(db,number);
-
+void replenish_balance(Card *card, const double add_money){
     if (card==NULL){
         printf("Err: не удалось найти карту!\n");
         return;
@@ -105,7 +98,7 @@ void replenish_balance(Database *db, const char *number, const float add_money){
 
 
 
-void withdraw_balance(Database *db, const char *number, float witdraw_sum){
+void withdraw_balance(Database *db, const char *number, double witdraw_sum){
     if(db == NULL|| number == NULL){
         printf("Err:invalid data\n");
         return;

@@ -6,8 +6,6 @@
 #include<stdio.h>
 
 
-
-
 Database *create_database(){
     Database *db = malloc(sizeof(Database));
     db->count=0;
@@ -19,36 +17,63 @@ Database *create_database(){
     return db;
 }
 
+int is_unique(Database *db,const char* phoneNumber, const char* login){
+    Card *temp=NULL;
+    temp=find_card_by_PhoneNumber(db,phoneNumber);
+    if(temp!=NULL){
+        printf("Карта с таким номером телефона уже есть в бд\n");
+        return 0;
+    }
+    temp = find_card_by_Login(db,login);
+    if(temp!=NULL){
+        printf("Карта с таким логином уже есть в бд\n");
+        return 0;
+    }
+    return 1;
+}
+
 void add_new_card_in_database(Database*db){
     char pin[5];
     char name[51];
     char login[31];
     char phone_number[12];
-
+    char gender[2];
     printf("Введите Pin: ");
     scanf("%4s",pin);
+    while (getchar() != '\n'); 
     printf("\n");
 
-    printf("Введите имя: ");
-    scanf("%50s", name);
+    printf("Введите ФИО: ");
+    scanf("%50[^\n]", name);
+   
     printf("\n");
 
     printf("Введите логин: ");
     scanf("%30s", login);
+   
     printf("\n");
 
-    printf("Введит свой номер телефона в формате 8XXX-XXX-XX-XX: ");
+    printf("Введите свой номер телефона в формате 8XXX-XXX-XX-XX: ");
     scanf("%11s",phone_number);
+  
+    printf("\n");
+    printf("Введите пол (M/F): ");
+    scanf("%1s",gender);
+  
     printf("\n");
     checkcapacity(db);
 
+    if(!is_unique(db,phone_number,login)){
+        return;
+    }
+
     for(int i = 0; i<db->capacity; i++){
         if(db->cards[i]==NULL){
-            Card *new_card = create_card(pin,name,login,phone_number);
+            Card *new_card = create_card(pin,name,login,phone_number,gender);
             while (is_cardNumber_unique(db,new_card->card_number)!=1){
                 free(new_card);
                 new_card=NULL;
-                new_card = create_card(pin,name,login,phone_number);
+                new_card = create_card(pin,name,login,phone_number,gender);
             }
             db->count++;
             db->cards[i]=new_card;
@@ -76,6 +101,7 @@ void add_card_in_db(Database *db, Card * card){
             strcpy(db->cards[i]->login, card->login);
             strcpy(db->cards[i]->phone_number,card->phone_number);
             strcpy(db->cards[i]->pin,card->pin);
+            strcpy(db->cards[i]->gender, card->gender);
 
             db->count++;
             break;

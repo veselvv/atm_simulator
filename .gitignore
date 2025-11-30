@@ -1,23 +1,25 @@
-# Сборка
+# Бинарные файлы и сборка
 build/
-*.o
-*.out
-
-# Временные файлы GTK (не коммитить пока)
-src/ui/gtk/
-src/ui/*.c
-src/ui/*.h
-src/ui/*.css
-.vscode/
-
-# Исполняемые файлы
+*.exe
+*.app
+myapp
+atm_simulator
+atm_admin
 gtklog
 login
 
-# Временные данные
-test_database.json
+# Объектные файлы
+*.o
+*.so
+*.dll
+
+# Временные файлы
+*~
+*.swp
+*.bak
 *.tmp
 
-# Резервные копии
-*~
-*.bak
+# Системные файлы
+.DS_Store
+Thumbs.db
+.vscode/

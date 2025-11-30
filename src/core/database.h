@@ -7,8 +7,8 @@ typedef struct Database{
     int capacity;
     int count;   
 }Database;
-
 Database *create_database();
+int is_unique(Database *db,const char* phoneNumber, const char* login);
 void add_new_card_in_database(Database*db);
 void add_card_in_db(Database *db, Card * card);
 void checkcapacity(Database *db);

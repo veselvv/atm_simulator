@@ -1,0 +1,881 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkWindow" id="window">
+    <property name="title">PigmiBank</property>
+    <property name="default-width">400</property>
+    <property name="default-height">600</property>
+    <!-- <property name="resizable">false</property> -->
+    <child>
+        <object class="GtkStack" id="main-stack">
+            <child>
+                <object class="GtkBox" id="login_page">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">40</property>
+                    <style>
+                        <class name="window"/>
+                    </style>
+        
+        
+                    <!-- шапка-->
+                     <child>
+                        <object class="GtkBox">
+                            <property name="valign">GTK_ALIGN_START</property>
+                            <property name="orientation">vertical</property>
+                            <style>
+                                <class name="main-head"/>
+                            </style>
+                            <!-- Line-->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="halign">fill</property>
+                                    <style>
+                                        <class name="line-head"/>
+                                    </style>
+                                </object>
+        
+                            </child>
+        
+                            <!-- Krug-->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="halign">GTK_ALIGN_CENTER</property>
+                                    <property name="valign">center</property>  <!-- ДОБАВЬ -->
+                                    <property name="orientation">vertical</property>  <!-- ИЗМЕНИ НА vertical -->
+        
+                                    
+                                    <style>
+                                        <class name="circle-head"/>
+                                    </style>
+                                    <child>
+                                        <object class="GtkImage">
+                                            <property name="file">pic/money-saving_9037723.png</property>
+                                            <property name="pixel-size">100</property>
+                                            <property name="halign">center</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                     </child>
+        
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">20</property>
+                            <property name="halign">center</property>
+                            <style>
+                                <class name="item-box"/>
+                            </style>
+                    
+                        <!-- Приветственный лейбл-->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label">Вход в личный кабинет</property>
+                                    <style>
+                                        <class name="main-label"/>
+                                    </style>
+                                </object>
+                            </child>
+        
+                            
+                            <!-- Поле ввода логина-->
+                            <child>
+                                <object class="GtkEntry" id="login-entry">
+                                    <property name="placeholder-text">login</property>
+                                    <property name="max-length">30</property>
+                                    <style>
+                                        <class name="main-entry"/>
+                                    </style>
+                                </object>
+                            </child>
+        
+                            <!-- Поле ввода пароля-->
+                            <child>
+                                <object class="GtkEntry" id="pass-entry">
+                                    <property name="placeholder-text">PIN</property>
+                                    <property name="invisible-char">*</property>
+                                    <property name="visibility">false</property>
+                                    <property name="max-length">4</property>
+        
+                                    <style>
+                                        <class name="main-entry-pass"/>
+                                    </style>
+                                </object>
+                            </child>
+        
+        
+                            <!-- кнопка входа-->
+                            <child>
+                                <object class="GtkButton" id="Exit-button">
+                                    <property name="label">Войти</property>
+                                    <style>
+                                        <class name="main-button"/>
+                                    </style>
+                                </object>
+                            </child>
+        
+        
+                        </object>
+                    </child>
+        
+        
+        
+                    <!-- Вход лругим способом-->
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="halign">center</property>
+                            <property name="valign">end</property>
+                            <property name="spacing">0</property>
+                            <property name="margin-bottom">50px</property>
+        
+                            <child>
+                                <object class="GtkButton" id="choice_button_phone">
+                                    <property name="label">Войти по номеру телефона</property>
+                                    <style>
+                                        <class name="enter-button-different"/>
+                                    </style>
+                                </object>
+                            </child>
+        
+                            <child>
+                                <object class="GtkButton" id="choice_button_card">
+                                    <property name="label">Войти по номеру карты</property>
+                                     <style>
+                                        <class name="enter-button-different"/>
+                                    </style>
+                                </object>
+                            </child>
+
+                            <child>
+                                <object class="GtkButton" id="choice_button_login">
+                                    <property name="label">Войти по логину</property>
+                                    <style>
+                                        <class name="enter-button-different"/>
+                                    </style>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+            
+
+            <!-- Окно личного кабинета-->
+            <child>
+                <object class="GtkBox" id="cabinet_page">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">40</property>
+                    <style>
+                        <class name="cabinet_page"/>
+                    </style>
+                    <!-- шапка-->
+                    <child>
+                        <object class="GtkBox">
+                            <property name="valign">GTK_ALIGN_START</property>
+                            <property name="orientation">vertical</property>
+                            <style>
+                                <class name="main-head"/>
+                            </style>
+                            <!-- Line-->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="orientation">horizontal</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkButton" id="last_button">
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+
+                                            
+                                            <child>
+                                                <object class="GtkImage">
+                                                <property name="margin-start">5</property>
+                                                <property name="file">pic/free-icon-log-out-1250678.png</property>
+                                                <property name="pixel-size">24</property>
+                                                </object>
+                                            </child>
+                                            <style>
+                                                <class name="last_button"/>
+                                            </style>
+                                        </object>
+                                    </child>
+                                    <style>
+                                        <class name="line-head"/>
+                                    </style>
+                                </object>
+                            </child>
+                           
+                            <!-- Krug-->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="halign">GTK_ALIGN_CENTER</property>
+                                    <property name="valign">center</property>  <!-- ДОБАВЬ -->
+                                    <property name="orientation">vertical</property>  <!-- ИЗМЕНИ НА vertical -->
+        
+                                    
+                                    <style>
+                                        <class name="circle-head"/>
+                                    </style>
+                                    <child>
+                                        <object class="GtkImage">
+                                            <property name="file">pic/money-saving_9037723.png</property>
+                                            <property name="pixel-size">100</property>
+                                            <property name="halign">center</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                             
+
+                        </object>
+                    </child>
+                    <!--Личный кабинет-->
+                    <child>
+                        <object class="GtkBox">
+                            <property name="halign">center</property>
+                            <property name="valign">start</property>
+                            <property name="orientation">vertical</property>
+                            <property name="hexpand">true</property>
+
+                            <property name="spacing">20</property>
+                            
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="halign">fill</property>
+                                    <property name="valign">fill</property>
+                                    <property name="hexpand">true</property>
+                                    <property name="orientation">horizontal</property>
+                                    <child>
+                                        <object class="GtkImage" id="person_image">
+                                            <property name="file">pic/man.png</property>
+                                            <property name="width-request">100</property>
+                                            <property name="height-request">100</property>
+                                            <property name="halign">center</property>
+                                            <property name="valign">center</property>
+                                            <property name="margin-top">10</property>
+                                            <property name="margin-bottom">10</property>
+                                            <property name="margin-start">10</property>
+                                            
+
+
+                                        </object>
+                                    </child>
+
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="halign">center</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin-end">10</property>
+                                            <property name="margin-top">10</property>
+                                            <property name="margin-bottom">10</property>
+                                            
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="orientation">vertical</property>
+                                                    <property name="halign">center</property>
+                                                    <property name="valign">center</property>
+                                                    <child>
+                                                        <object class="GtkBox">
+                                                            <property name="orientation">horizontal</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="spacing">5</property>
+                                                            
+                                                            <child>
+                                                                <object class="GtkLabel" id="label_user_start">
+                                                                    <property name="halign">start</property>
+                                                                    <property name="valign">start</property>
+                                                                    <property name="label">Владелец:</property>
+                                                                    <style>
+                                                                        <class name="label_user"/>
+                                                                    </style>
+                                                                </object>
+                                                            </child>                                    
+                                                            <child>
+                                                                <object class="GtkLabel" id="label_user">
+                                                                    <property name="halign">start</property>
+                                                                    <property name="label">Unstate</property>
+                                                                    <style>
+                                                                        <class name="label_user"/>
+                                                                    </style>
+                                                                </object>
+                                                            </child>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkBox">
+                                                            <property name="orientation">horizontal</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="spacing">5</property>
+                                                            
+                                                            <child>
+                                                                <object class="GtkLabel" id="balance-label">
+                                                                    <property name="halign">start</property>
+                                                                    <property name="valign">start</property>
+                                                                    <property name="label">Баланс:</property>
+                                                                    <style>
+                                                                        <class name="balance-label"/>
+                                                                    </style>
+                                                                </object>
+                                                            </child>                                    
+                                                            <child>
+                                                                <object class="GtkLabel" id="main-balance-label">
+                                                                    <property name="label">0</property>
+                                                                    <style>
+                                                                        <class name="balance-label"/>
+                                                                    </style>
+                                                                </object>
+                                                            </child> 
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkBox">
+                                                            <property name="orientation">horizontal</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="spacing">5</property>
+                                                            <child>
+                                                                <object class="GtkLabel" id="card_label">
+                                                                    <property name="halign">start</property>
+                                                                    <property name="valign">start</property>
+                                                                    <property name="label">Номер карты:</property>
+                                                                    <style>
+                                                                        <class name="card_label"/>
+                                                                    </style>
+                                                                </object>
+                                                            </child>                                    
+                                                            <child>
+                                                                <object class="GtkLabel" id="main_card_label">
+                                                                    <property name="label">0</property>
+                                                                    <style>
+                                                                        <class name="card_label"/>
+                                                                    </style>
+                                                                </object>
+                                                            </child> 
+                                                        </object>
+                                                    </child>
+                                                     <child>
+                                                        <object class="GtkBox">
+                                                            <property name="orientation">horizontal</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="spacing">5</property>
+                                                            
+                                                            <child>
+                                                                <object class="GtkLabel" id="gender-label">
+                                                                    <property name="halign">start</property>
+                                                                    <property name="valign">start</property>
+                                                                    <property name="label">Пол:</property>
+                                                                    <style>
+                                                                        <class name="balance-label"/>
+                                                                    </style>
+                                                                </object>
+                                                            </child>                                    
+                                                            <child>
+                                                                <object class="GtkLabel" id="main_gender_label">
+                                                                    <property name="label">0</property>
+                                                                    <style>
+                                                                        <class name="balance-label"/>
+                                                                    </style>
+                                                                </object>
+                                                            </child> 
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+                                            
+                                        </object>
+                                    </child>
+                                    <style>
+                                        <class name="user-card-box"/>
+                                    </style>
+                                </object>
+                            </child>
+                           
+
+
+
+
+
+
+
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">horizontal</property>
+                                <property name="halign">fill</property>
+                                <property name="valign">fill</property>
+                                <property name="spacing">20</property>
+                                
+                                
+                                <child>
+                                    <object class="GtkButton">
+                                        <child>
+                                            <object class="GtkBox"> 
+                                                <property name="halign">fill</property>
+                                                <property name="valign">fill</property>
+                                                <property name="hexpand">true</property>
+                                                <property name="vexpand">true</property>
+                                                
+
+                                                <child>
+                                                    <object class="GtkBox">
+                                                    
+                                                        <property name="halign">fill</property>
+                                                        <property name="valign">center</property>
+                                                        <property name="orientation">vertical</property>
+                                                        <property name="hexpand">true</property>  <!-- ДОБАВИТЬ -->
+                                                        <property name="valign">fill</property> <!-- ДОБАВИТЬ -->
+                                                        <child>
+                                                            <object class="GtkLabel">
+                                                                <property name="label">История</property>
+                                                                <property name="margin-top">10</property>
+                                                                <style>
+                                                                    <class name="history"/>
+                                                                </style>
+                                                            </object>
+                                                        </child>
+                                                        <!-- <style>
+                                                            <class name="user-card-box-1"/>
+                                                        </style> -->
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                        <style>
+                                            <class name="user-card-box-1"/>
+                                        </style>
+                                    </object>
+                                </child>
+    
+    
+                                <child>
+                                    <object class="GtkBox"> 
+                                        
+                                        <property name="halign">fill</property>
+                                        <property name="hexpand">true</property>
+                                        <property name="valign">fill</property>
+                                        <property name="vexpand">true</property>
+                                        <child>
+                                            <object class="GtkBox">
+                                                <property name="orientation">vertical</property>
+                                                <property name="halign">fill</property>  <!-- ИЗМЕНИТЬ -->
+                                                <property name="hexpand">true</property>  <!-- ДОБАВИТЬ -->
+                                                <property name="valign">center</property> <!-- ДОБАВИТЬ -->
+                                                <property name="spacing">10</property>
+                                                <!-- Кнопка перевода-->
+                                                <child>
+                                                    <object class="GtkButton" id="transfer_button">
+                                                        <property name="label">Перевести</property>
+                                                        <style>
+                                                            <class name="button-column"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+
+
+
+                                                <!-- Кнопка снятия-->
+                                                <child>
+                                                    <object class="GtkButton" id="take_money_button">
+                                                        <property name="label">Снять</property>
+                                                        <style>
+                                                            <class name="button-column"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+
+                                                <!-- Кнопка пополнения-->
+                                                <child>
+                                                    <object class="GtkButton" id="give_money_button">
+                                                        <property name="label">Пополнить</property>
+                                                        <style>
+                                                            <class name="button-column"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                        <style>
+                                            <class name="user-card-box-2"/>
+                                        </style>
+                                    </object>
+                                </child>
+                    
+                            </object>
+                        </child>
+                        </object>
+
+
+                        
+                    </child>
+
+
+
+                </object>
+            </child>
+
+
+            <!-- Окно для анимации-->
+            <child>
+                <object class="GtkBox" id="animation_page">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">40</property>
+                    <style>
+                        <class name="window"/>
+                    </style>
+        
+        
+                    <!-- шапка-->
+                     <child>
+                        <object class="GtkBox">
+                            <property name="valign">GTK_ALIGN_START</property>
+                            <property name="orientation">vertical</property>
+                            <style>
+                                <class name="main-head"/>
+                            </style>
+                            <!-- Line-->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="halign">fill</property>
+                                    <style>
+                                        <class name="line-head"/>
+                                    </style>
+                                </object>
+        
+                            </child>
+        
+                            <!-- Krug-->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="halign">GTK_ALIGN_CENTER</property>
+                                    <property name="valign">center</property>  <!-- ДОБАВЬ -->
+                                    <property name="orientation">vertical</property>  <!-- ИЗМЕНИ НА vertical -->
+        
+                                    
+                                    <style>
+                                        <class name="circle-head"/>
+                                    </style>
+                                    <child>
+                                        <object class="GtkImage">
+                                            <property name="file">pic/money-saving_9037723.png</property>
+                                            <property name="pixel-size">100</property>
+                                            <property name="halign">center</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+  </object>
+
+
+    <object class="GtkDialog" id="translate_dialog">
+    <property name="title">Перевод</property>
+    <property name="transient-for">window</property>
+    <property name="modal">true</property>
+    <property name="default-width">300</property>
+    <property name="default-height">500</property>
+    <property name="resizable">false</property>
+    <property name="deletable">true</property>
+
+    <child>
+
+        <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="spacing">15</property>
+                <child>
+                    <object class="GtkBox">
+                        <property name="valign">GTK_ALIGN_START</property>
+                        <property name="orientation">vertical</property>
+                        <style>
+                            <class name="main-head"/>
+                        </style>
+                        <!-- Line-->
+                        <child>
+                            <object class="GtkBox">
+                                <property name="halign">fill</property>
+                                <style>
+                                    <class name="line-head"/>
+                                </style>
+                            </object>
+                        </child>
+    
+                        <!-- Krug-->
+                        <child>
+                            <object class="GtkBox">
+                                <property name="halign">GTK_ALIGN_CENTER</property>
+                                <property name="valign">center</property>  <!-- ДОБАВЬ -->
+                                <property name="orientation">vertical</property>  <!-- ИЗМЕНИ НА vertical -->
+                                <style>
+                                    <class name="circle-head"/>
+                                </style>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="file">pic/money-saving_9037723.png</property>
+                                        <property name="pixel-size">100</property>
+                                        <property name="halign">center</property>
+                                        <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label">Новый перевод</property>
+                    <style>
+                        <class name="dialog-label"/>
+                    </style>
+                </object>
+            </child>
+            <child>
+                <object class="GtkEntry">
+                    <property name="placeholder-text">card number</property>
+                    <property name="margin-start">50</property>
+                    <property name="margin-end">50</property>
+                    <style>
+                        <class name="main-entry-pass"/>
+                    </style>
+                </object>
+            </child>
+
+
+            <child>
+                <object class="GtkEntry">
+                    <property name="placeholder-text">сумма</property>
+                    <property name="margin-start">50</property>
+                    <property name="margin-end">50</property>
+                    <style>
+                        <class name="main-entry-pass"/>
+                    </style>
+                </object>
+            </child>
+
+
+            <child>
+                <object class="GtkButton">
+                    <property name="margin-start">50</property>
+                    <property name="margin-end">50</property>
+                    <property name="label">Отправить</property>
+                    <style>
+                        <class name="main-button"/>
+                    </style>
+                </object>
+            </child>
+
+            
+            <style>
+                <class name="dialog-box"/>
+
+            </style>
+        </object>
+    </child>
+
+
+
+
+
+
+
+
+
+    </object>
+    <object class="GtkDialog" id="take_money_dialog">
+        <property name="title">Снять наличные</property>
+        <property name="transient-for">window</property>
+        <property name="modal">true</property>
+        <property name="default-width">300</property>
+        <property name="default-height">500</property>
+        <property name="resizable">false</property>
+        <property name="deletable">true</property>
+
+        <child>
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">15</property>
+                <child>
+                    <object class="GtkBox">
+                        <property name="valign">GTK_ALIGN_START</property>
+                        <property name="orientation">vertical</property>
+                        <style>
+                            <class name="main-head"/>
+                        </style>
+                        <!-- Line-->
+                        <child>
+                            <object class="GtkBox">
+                                <property name="halign">fill</property>
+                                <style>
+                                    <class name="line-head"/>
+                                </style>
+                            </object>
+                        </child>
+    
+                        <!-- Krug-->
+                        <child>
+                            <object class="GtkBox">
+                                <property name="halign">GTK_ALIGN_CENTER</property>
+                                <property name="valign">center</property>  <!-- ДОБАВЬ -->
+                                <property name="orientation">vertical</property>  <!-- ИЗМЕНИ НА vertical -->
+                                <style>
+                                    <class name="circle-head"/>
+                                </style>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="file">pic/money-saving_9037723.png</property>
+                                        <property name="pixel-size">100</property>
+                                        <property name="halign">center</property>
+                                        <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkLabel">
+                        <property name="label">Снять наличные</property>
+                        <style>
+                            <class name="dialog-label"/>
+                        </style>
+                    </object>
+                </child>
+                        
+
+
+                <child>
+                    <object class="GtkEntry">
+                        <property name="placeholder-text">сумма</property>
+                        <property name="margin-start">50</property>
+                        <property name="margin-end">50</property>
+                        <style>
+                            <class name="main-entry-pass"/>
+                        </style>
+                    </object>
+                </child>
+
+
+                <child>
+                    <object class="GtkButton">
+                        <property name="margin-start">50</property>
+                        <property name="margin-end">50</property>
+                        <property name="label">Снять</property>
+                        <style>
+                            <class name="main-button"/>
+                        </style>
+                    </object>
+                </child>
+
+                        
+                <style>
+                    <class name="dialog-box"/>
+                </style>
+            </object>        
+        </child>
+    </object>
+    
+
+    <object class="GtkDialog" id="give_money_dialog">
+        <property name="title">Пополнение баланса</property>
+        <property name="transient-for">window</property>
+        <property name="modal">true</property>
+        <property name="default-width">300</property>
+        <property name="default-height">500</property>
+        <property name="resizable">false</property>
+        <property name="deletable">true</property>
+
+        <child>
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">15</property>
+                <child>
+                    <object class="GtkBox">
+                        <property name="valign">GTK_ALIGN_START</property>
+                        <property name="orientation">vertical</property>
+                        <style>
+                            <class name="main-head"/>
+                        </style>
+                        <!-- Line-->
+                        <child>
+                            <object class="GtkBox">
+                                <property name="halign">fill</property>
+                                <style>
+                                    <class name="line-head"/>
+                                </style>
+                            </object>
+                        </child>
+    
+                        <!-- Krug-->
+                        <child>
+                            <object class="GtkBox">
+                                <property name="halign">GTK_ALIGN_CENTER</property>
+                                <property name="valign">center</property>  <!-- ДОБАВЬ -->
+                                <property name="orientation">vertical</property>  <!-- ИЗМЕНИ НА vertical -->
+                                <style>
+                                    <class name="circle-head"/>
+                                </style>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="file">pic/money-saving_9037723.png</property>
+                                        <property name="pixel-size">100</property>
+                                        <property name="halign">center</property>
+                                        <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkLabel">
+                        <property name="label">Пополнение баланса</property>
+                        <style>
+                            <class name="dialog-label"/>
+                        </style>
+                    </object>
+                </child>
+                        
+
+
+                <child>
+                    <object class="GtkEntry" id="give_money_entry_dialog">
+                        <property name="placeholder-text">сумма</property>
+                        <property name="margin-start">50</property>
+                        <property name="margin-end">50</property>
+                        <style>
+                            <class name="main-entry-pass"/>
+                        </style>
+                    </object>
+                </child>
+
+
+                <child>
+                    <object class="GtkButton" id="give_money_button_dialog">
+                        <property name="margin-start">50</property>
+                        <property name="margin-end">50</property>
+                        <property name="label">Пополнить</property>
+                        <style>
+                            <class name="main-button"/>
+                        </style>
+                    </object>
+                </child>
+
+                        
+                <style>
+                    <class name="dialog-box"/>
+                </style>
+            </object>        
+        </child>
+    </object>
+
+</interface>

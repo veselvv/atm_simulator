@@ -9,7 +9,7 @@
 
 
 Card *create_card(const char *pin,
-    const char *name,  const char *login, const char *phone_number){
+    const char *name,  const char *login, const char *phone_number, const char *gender){
     //memmory for NEw card
     Card *new_card = malloc(sizeof(Card));
 
@@ -31,6 +31,8 @@ Card *create_card(const char *pin,
     generate_random_cvv(new_card->cvv);
     new_card->created_date = time(NULL);
     generate_expiry_date(new_card->expiry_date);
+    strcpy(new_card->gender,gender);
+
 
 
     
@@ -71,6 +73,7 @@ void print_card_info(Card *card){
     printf("Статус блокировки: %d\n",card->is_blocked);
     printf("Осталось количество попыток ввода PIN: %d\n",card->pin_atempts);
     printf("PIN-код: %s\n",card->pin);
+    printf("Пол: %s\n",card->gender);
 }
 
 

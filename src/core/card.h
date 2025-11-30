@@ -19,11 +19,12 @@ typedef struct Card{
     char cvv[4];
     char phone_number[12];
     char login[31];
+    char gender[2];
     time_t created_date;
 
 }Card;
 
-Card *create_card(const char *pin, const char *name,  const char *login, const char *phone_number);
+Card *create_card(const char *pin, const char *name,  const char *login, const char *phone_number, const char *gender);
 void generate_random_cvv(char *cvv_buffer);
 void generate_expiry_date(char *expiry_buffer);
 void create_card_number(char *card_number_buffer);
