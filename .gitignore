@@ -23,3 +23,17 @@ login
 .DS_Store
 Thumbs.db
 .vscode/
+# Compiled object files
+*.o
+*.a
+*.so
+
+# Build directories
+build/
+bin/
+obj/
+
+# Executables
+*.exe
+*.out
+*.app
