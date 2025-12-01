@@ -754,7 +754,7 @@
 
 
                 <child>
-                    <object class="GtkEntry">
+                    <object class="GtkEntry" id="take_money_entry_dialog">
                         <property name="placeholder-text">сумма</property>
                         <property name="margin-start">50</property>
                         <property name="margin-end">50</property>
@@ -766,7 +766,7 @@
 
 
                 <child>
-                    <object class="GtkButton">
+                    <object class="GtkButton" id="take_money_button_dialog">
                         <property name="margin-start">50</property>
                         <property name="margin-end">50</property>
                         <property name="label">Снять</property>

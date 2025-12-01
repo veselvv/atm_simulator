@@ -98,13 +98,7 @@ void replenish_balance(Card *card, const double add_money){
 
 
 
-void withdraw_balance(Database *db, const char *number, double witdraw_sum){
-    if(db == NULL|| number == NULL){
-        printf("Err:invalid data\n");
-        return;
-    }
-    Card *card = find_card_by_CardNumber(db, number);
-    
+void withdraw_balance(Card *card, double witdraw_sum){    
     if(card==NULL){
         printf("Err: не удалось найти карту\n");
         return;

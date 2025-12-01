@@ -48,6 +48,9 @@ typedef struct{
     GtkWidget *give_money_button_dialog;
     GtkWidget *give_money_entry_dialog;
     GtkWidget *person_image;
+    GtkWidget *take_money_entry_dialog;
+    GtkWidget *take_money_button_dialog;
+
 
 
 
@@ -186,7 +189,35 @@ static void balance_up_dialog_button(GtkWidget *btn, gpointer userdata){
     }
 
 }
+static void balance_low_dialog_button(GtkWidget *btn, gpointer userdata){
+    AppData *data = (AppData*)userdata;
+    const char *text = gtk_editable_get_text(GTK_EDITABLE(data->take_money_entry_dialog));
+    double value = safe_string_to_double(text);
+    if (text == NULL || text[0] == '\0') {
+        return;
+    }
+    if(value!=-1){
+        withdraw_balance(data->current_card, value);
+        if (save_db_to_jsoon(data->db, "../../build/test_database.json")) {
+            g_print("Данные успешно сохранены\n");
+        } else {
+            g_print("Ошибка сохранения данных!\n");
+        }
+        double balance = data->current_card->balance;
+        char balance_str[50];
+        snprintf(balance_str, sizeof(balance_str), "%.2fР", balance);
+        gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str);
+        gtk_editable_set_text(GTK_EDITABLE(data->take_money_entry_dialog),"");
+        on_dialog_close_request(GTK_WINDOW(data->take_money_dialog));
 
+    }
+    else{
+        printf("Не удалось преобразовать строку в формат double\n");
+    }
+    
+
+
+}
 static void close_and_save(GtkWidget *window, gpointer userdata){
     AppData *data=(AppData*)userdata;
     if (save_db_to_jsoon(data->db, "../../build/test_database.json")) {
@@ -352,6 +383,8 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     data->give_money_dialog=GTK_DIALOG(gtk_builder_get_object(builder,"give_money_dialog"));
     data->person_image=GTK_WIDGET(gtk_builder_get_object(builder, "person_image"));
     data->main_gender_label=GTK_WIDGET(gtk_builder_get_object(builder,"main_gender_label"));
+    data->take_money_button_dialog=GTK_WIDGET(gtk_builder_get_object(builder, "take_money_button_dialog"));
+    data->take_money_entry_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "take_money_entry_dialog"));
     gtk_widget_set_cursor_from_name(data->button, "pointer");
     gtk_widget_set_cursor_from_name(data->last_button, "pointer");
     gtk_widget_set_cursor_from_name(data->choice_button_phone, "pointer");
@@ -377,6 +410,7 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     
 
     g_signal_connect(data->give_money_button_dialog,"clicked",G_CALLBACK(balance_up_dialog_button),data);
+    g_signal_connect(data->take_money_button_dialog,"clicked",G_CALLBACK(balance_low_dialog_button),data);
     g_object_unref(builder);
 
     gtk_stack_set_visible_child(GTK_STACK(data->main_stack), data->login_page);
