@@ -6,24 +6,20 @@
 
 
 
-void transform_balance_by_CardNumber(Database *db, const char *card1, const char *card2, const double balance){
-    if (db==NULL|| card1==NULL||card2==NULL){
+void transform_balance_by_CardNumber(Card *card1,  Card *card2, const double balance){
+    if (card1==NULL||card2==NULL){
         printf("Err: Unvalid data\n");
         return;
     }
-    Card *card_from = find_card_by_CardNumber(db, card1);
-    Card *card_to = find_card_by_CardNumber(db,card2);
-
-
-    if (card_from==NULL||card_to==NULL){    
+    if (card1==NULL||card2==NULL){    
         return;
     }
 
-    if (card_from->is_blocked==1){
+    if (card1->is_blocked==1){
         printf("Нельзя выполнить перевод с заблокированной карты.\n");
         return;
     }
-    if (card_to->is_blocked==1){
+    if (card2->is_blocked==1){
         printf("Нельзя выполнить перевод на заблокированную карту.\n");
         return;
     }
@@ -31,35 +27,27 @@ void transform_balance_by_CardNumber(Database *db, const char *card1, const char
         printf("Баланс должен быть больше 0.\n");
         return;
     }
-    if (card_from->balance<balance){
+    if (card1->balance<balance){
         printf("Неудалось выполнить перевод, недостаточно средств.\n");
         return;
     }
-    card_from->balance = card_from->balance-balance;
-    card_to->balance = card_to->balance+balance;
+    card1->balance = card1->balance-balance;
+    card2->balance = card2->balance+balance;
     printf("Перевод успешно выполнен\n");
 }
 
 
-
-void transform_balance_by_PhoneNumber(Database *db, const char *number1, const char *number2, const double balance){
-    if (db==NULL|| number1==NULL||number2==NULL){
-        printf("Err: Unvalid data\n");
-        return;
-    }
-    Card *card_from = find_card_by_PhoneNumber(db, number1);
-    Card *card_to = find_card_by_PhoneNumber(db,number2);
-
-
-    if (card_from==NULL||card_to==NULL){    
+void transform_balance_by_PhoneNumber(Card *card1,  Card *card2, const double balance){
+    if (card1==NULL||card2==NULL){    
+        printf("Не удалось найти карту\n");
         return;
     }
 
-    if (card_from->is_blocked==1){
+    if (card1->is_blocked==1){
         printf("Нельзя выполнить перевод с заблокированной карты.\n");
         return;
     }
-    if (card_to->is_blocked==1){
+    if (card2->is_blocked==1){
         printf("Нельзя выполнить перевод на заблокированную карту.\n");
         return;
     }
@@ -67,12 +55,12 @@ void transform_balance_by_PhoneNumber(Database *db, const char *number1, const c
         printf("Баланс для перевода должен быть больше 0.\n");
         return;
     }
-    if (card_from->balance<balance){
+    if (card1->balance<balance){
         printf("Неудалось выполнить перевод, недостаточно средств.\n");
         return;
     }
-    card_from->balance = card_from->balance-balance;
-    card_to->balance = card_to->balance+balance;
+    card1->balance = card1->balance-balance;
+    card2->balance = card2->balance+balance;
     printf("Перевод успешно выполнен!\n");
 }
 

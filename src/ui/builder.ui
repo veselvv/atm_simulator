@@ -631,6 +631,7 @@
                         </child>
                     </object>
                 </child>
+            
             <child>
                 <object class="GtkLabel">
                     <property name="label">Новый перевод</property>
@@ -640,7 +641,7 @@
                 </object>
             </child>
             <child>
-                <object class="GtkEntry">
+                <object class="GtkEntry" id="translate_entry_card_dialog">
                     <property name="placeholder-text">card number</property>
                     <property name="margin-start">50</property>
                     <property name="margin-end">50</property>
@@ -652,7 +653,7 @@
 
 
             <child>
-                <object class="GtkEntry">
+                <object class="GtkEntry" id="translate_entry_money_dialog">
                     <property name="placeholder-text">сумма</property>
                     <property name="margin-start">50</property>
                     <property name="margin-end">50</property>
@@ -662,9 +663,9 @@
                 </object>
             </child>
 
-
+            
             <child>
-                <object class="GtkButton">
+                <object class="GtkButton" id="translate_button_dialog">
                     <property name="margin-start">50</property>
                     <property name="margin-end">50</property>
                     <property name="label">Отправить</property>
@@ -673,7 +674,16 @@
                     </style>
                 </object>
             </child>
-
+            <child>
+                <object class="GtkButton" id="transfer_button_change">
+                    <property name="margin-start">50</property>
+                    <property name="margin-end">50</property>
+                    <property name="label">Перевод по номеру телефона</property>
+                    <style>
+                        <class name="enter-button-different"/>
+                    </style>
+                </object>
+            </child>
             
             <style>
                 <class name="dialog-box"/>

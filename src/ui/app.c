@@ -13,7 +13,10 @@ typedef enum {
     CARD_MODE      // по номеру карты
 } LoginMode;
 
-
+typedef enum{
+    TRANSFER_CARD_MODE,
+    TRANSFER_PHONE_MODE
+} TransferMode;
 
 
 
@@ -35,6 +38,8 @@ typedef struct{
     GtkWidget *choice_button_login;
     GtkWidget *main_card_label;
     LoginMode current_mode;
+
+    
     GtkWidget *animation_page;
 
     GtkWidget *transfer_button;
@@ -50,8 +55,12 @@ typedef struct{
     GtkWidget *person_image;
     GtkWidget *take_money_entry_dialog;
     GtkWidget *take_money_button_dialog;
+    GtkWidget *translate_entry_card_dialog;
+    GtkWidget *translate_entry_money_dialog;
+    GtkWidget *translate_button_dialog;
 
-
+    TransferMode current_transfer_mode;
+    GtkWidget *transfer_button_change;
 
 
 
@@ -218,6 +227,70 @@ static void balance_low_dialog_button(GtkWidget *btn, gpointer userdata){
 
 
 }
+static void transfer_button_change_press(GtkWidget *btn, gpointer userdata){
+    AppData *data = (AppData*)userdata;
+    switch (data->current_transfer_mode){
+    case TRANSFER_CARD_MODE:
+        data->current_transfer_mode = TRANSFER_PHONE_MODE;
+        gtk_entry_set_placeholder_text(GTK_ENTRY(data->translate_entry_card_dialog), "phone number");
+        break;
+    
+    case TRANSFER_PHONE_MODE:
+        data->current_transfer_mode=TRANSFER_CARD_MODE;
+        gtk_entry_set_placeholder_text(GTK_ENTRY(data->translate_entry_card_dialog), "card number");
+        break;
+    default:
+        g_print("Не удалось сменить мод\n");
+    }
+    
+}
+
+static void balance_translate_dialog_button(GtkWidget *btn, gpointer userdata){
+    AppData *data = (AppData*)userdata;
+    const char *text_entry_card = gtk_editable_get_text(GTK_EDITABLE(data->translate_entry_card_dialog));
+    const char *text_entry_money = gtk_editable_get_text(GTK_EDITABLE(data->translate_entry_money_dialog));
+    double value = safe_string_to_double(text_entry_money);
+    Card *card1 = data->current_card;
+    Card *card2 = NULL;
+    if (text_entry_card == NULL || text_entry_card[0] == '\0'||text_entry_money==NULL||text_entry_money[0]=='\0') {
+        return;
+    }
+    if(value!=-1){
+        switch (data->current_transfer_mode){
+            case  TRANSFER_CARD_MODE:
+            card2 = find_card_by_CardNumber(data->db, text_entry_card);
+            transform_balance_by_CardNumber(card1,card2,value);
+            break;
+        
+        case TRANSFER_PHONE_MODE:
+            card2 = find_card_by_PhoneNumber(data->db,text_entry_card);
+            transform_balance_by_PhoneNumber(card1,card2,value);
+            break;
+        default:
+            break;
+        }
+        if (save_db_to_jsoon(data->db, "../../build/test_database.json")) {
+            g_print("Данные успешно сохранены\n");
+        } else {
+            g_print("Ошибка сохранения данных!\n");
+        }
+        double balance1 = card1->balance;
+        char balance_str1[50];
+        snprintf(balance_str1, sizeof(balance_str1), "%.2fР", balance1);
+        gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str1);
+        gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_card_dialog),"");
+        gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_money_dialog),"");
+        on_dialog_close_request(GTK_WINDOW(data->translate_dialog));
+
+    }
+    else{
+        printf("Не удалось преобразовать строку в формат double\n");
+    }
+    
+
+}
+
+
 static void close_and_save(GtkWidget *window, gpointer userdata){
     AppData *data=(AppData*)userdata;
     if (save_db_to_jsoon(data->db, "../../build/test_database.json")) {
@@ -385,6 +458,11 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     data->main_gender_label=GTK_WIDGET(gtk_builder_get_object(builder,"main_gender_label"));
     data->take_money_button_dialog=GTK_WIDGET(gtk_builder_get_object(builder, "take_money_button_dialog"));
     data->take_money_entry_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "take_money_entry_dialog"));
+    data->translate_entry_card_dialog=GTK_WIDGET(gtk_builder_get_object(builder,"translate_entry_card_dialog"));
+    data->translate_entry_money_dialog=GTK_WIDGET(gtk_builder_get_object(builder,"translate_entry_money_dialog"));
+    data->translate_button_dialog=GTK_WIDGET(gtk_builder_get_object(builder,"translate_button_dialog"));
+    data->transfer_button_change=GTK_WIDGET(gtk_builder_get_object(builder,"transfer_button_change"));
+    data->current_transfer_mode=TRANSFER_CARD_MODE;
     gtk_widget_set_cursor_from_name(data->button, "pointer");
     gtk_widget_set_cursor_from_name(data->last_button, "pointer");
     gtk_widget_set_cursor_from_name(data->choice_button_phone, "pointer");
@@ -411,6 +489,8 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
 
     g_signal_connect(data->give_money_button_dialog,"clicked",G_CALLBACK(balance_up_dialog_button),data);
     g_signal_connect(data->take_money_button_dialog,"clicked",G_CALLBACK(balance_low_dialog_button),data);
+    g_signal_connect(data->translate_button_dialog, "clicked", G_CALLBACK(balance_translate_dialog_button),data);
+    g_signal_connect(data->transfer_button_change,"clicked",G_CALLBACK(transfer_button_change_press),data);
     g_object_unref(builder);
 
     gtk_stack_set_visible_child(GTK_STACK(data->main_stack), data->login_page);
