@@ -2,6 +2,7 @@
 #include "../core/card.h"
 #include "../core/file_io.h"
 #include "../core/operation.h"
+#include <sys/stat.h>
 #include <string.h>
 #include <gtk/gtk.h>
 
@@ -62,6 +63,10 @@ typedef struct{
     TransferMode current_transfer_mode;
     GtkWidget *transfer_button_change;
 
+    GtkWidget *history_button;
+    char* file_history_name;
+    const char *data_path;
+
 
 
 
@@ -69,8 +74,12 @@ typedef struct{
  
 
 
-
-
+static void open_log_file(GtkWidget *btn, gpointer userdata){
+    AppData *data = (AppData*)userdata;
+    char command[256];
+    snprintf(command, sizeof(command), "xdg-open \"%s\"", data->file_history_name);
+    system(command);
+}
 
 static gboolean load_css(void) {
     GtkCssProvider *provider = gtk_css_provider_new();
@@ -180,7 +189,7 @@ static void balance_up_dialog_button(GtkWidget *btn, gpointer userdata){
 
     if(value!=-1){
         replenish_balance(data->current_card, value);
-        if (save_db_to_jsoon(data->db, "../../build/test_database.json")) {
+        if (save_db_to_jsoon(data->db, data->data_path)) {
             g_print("Данные успешно сохранены\n");
         } else {
             g_print("Ошибка сохранения данных!\n");
@@ -207,7 +216,7 @@ static void balance_low_dialog_button(GtkWidget *btn, gpointer userdata){
     }
     if(value!=-1){
         withdraw_balance(data->current_card, value);
-        if (save_db_to_jsoon(data->db, "../../build/test_database.json")) {
+        if (save_db_to_jsoon(data->db, data->data_path)) {
             g_print("Данные успешно сохранены\n");
         } else {
             g_print("Ошибка сохранения данных!\n");
@@ -269,7 +278,7 @@ static void balance_translate_dialog_button(GtkWidget *btn, gpointer userdata){
         default:
             break;
         }
-        if (save_db_to_jsoon(data->db, "../../build/test_database.json")) {
+        if (save_db_to_jsoon(data->db, data->data_path)) {
             g_print("Данные успешно сохранены\n");
         } else {
             g_print("Ошибка сохранения данных!\n");
@@ -293,7 +302,7 @@ static void balance_translate_dialog_button(GtkWidget *btn, gpointer userdata){
 
 static void close_and_save(GtkWidget *window, gpointer userdata){
     AppData *data=(AppData*)userdata;
-    if (save_db_to_jsoon(data->db, "../../build/test_database.json")) {
+    if (save_db_to_jsoon(data->db, data->data_path)) {
         g_print("Данные успешно сохранены\n");
     } else {
         g_print("Ошибка сохранения данных!\n");
@@ -308,6 +317,8 @@ static void click_last(GtkWidget *btn, gpointer userdata){
     gtk_editable_set_text(GTK_EDITABLE(data->Entry_login), "");
     gtk_editable_set_text(GTK_EDITABLE(data->Entry_pass), "");
     data->current_card=NULL;
+    free(data->file_history_name);
+    data->file_history_name=NULL;
     gtk_stack_set_visible_child(GTK_STACK(data->main_stack), data->login_page);
 
 
@@ -350,9 +361,6 @@ static void button_clicked(GtkWidget *btn, gpointer userdata){
     const char *login = gtk_editable_get_text(GTK_EDITABLE(data->Entry_login));
     const char *pass = gtk_editable_get_text(GTK_EDITABLE(data->Entry_pass));
     Card* card = NULL;
-    
-
-
     switch (data->current_mode){
         case PHONE_MODE:
             card=find_card_by_PhoneNumber(data->db, login);
@@ -385,12 +393,24 @@ static void button_clicked(GtkWidget *btn, gpointer userdata){
                 gtk_label_set_text(GTK_LABEL(data->main_gender_label),"Мужской");
 
             }
-
+            struct stat st = {0};
+            if (stat("../../data", &st) == -1) {
+                mkdir("../../data", 0755);
+            }
+            
+            if (stat("../../data/logs", &st) == -1) {
+                mkdir("../../data/logs", 0755);
+            }
+            char *filename = malloc(sizeof(char)*256);
+            if(filename!=NULL){
+                snprintf(filename, sizeof(char)*256, 
+                        "../../data/logs/operations_%s.json", data->current_card->card_number);
+                data->file_history_name=filename;
+            }
             snprintf(balance_str, sizeof(balance_str), "%.2fР", balance);
             gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str);
             gtk_label_set_text(GTK_LABEL(data->main_card_label), data->current_card->card_number);
             gtk_label_set_text(GTK_LABEL(data->label_user),(data->current_card->holder_name));
-
             start_fade_transition(data);
             
 
@@ -414,21 +434,21 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     GtkBuilder *builder = gtk_builder_new_from_file("builder.ui");
     GObject *window = gtk_builder_get_object(builder, "window");
 
+    AppData *data = g_new(AppData, 1);
+    data->data_path="/home/vvv/Desktop/guap/atm_simulator/data/test_database.json";
     Database *db = create_database();
     if (db) {
         g_print("Загружаем базу данных...\n");
-        if (!load_Database_from_json("../../build/test_database.json", db)) {
+        if (!load_Database_from_json(data->data_path, db)) {
             g_print("Не удалось загрузить базу данных\n");
 
         } else {
             g_print("База данных загружена успешно\n");
         }
     }
-    AppData *data = g_new(AppData, 1);
     data->db=db;
     data->main_stack = GTK_WIDGET(gtk_builder_get_object(builder, "main-stack"));
     gtk_stack_set_transition_type(GTK_STACK(data->main_stack), GTK_STACK_TRANSITION_TYPE_CROSSFADE);
-
     gtk_stack_set_transition_duration(GTK_STACK(data->main_stack), 200);
     data->Entry_login=GTK_WIDGET(gtk_builder_get_object(builder, "login-entry"));
     data->Entry_pass=GTK_WIDGET(gtk_builder_get_object(builder,"pass-entry"));
@@ -463,12 +483,22 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     data->translate_button_dialog=GTK_WIDGET(gtk_builder_get_object(builder,"translate_button_dialog"));
     data->transfer_button_change=GTK_WIDGET(gtk_builder_get_object(builder,"transfer_button_change"));
     data->current_transfer_mode=TRANSFER_CARD_MODE;
+    data->history_button = GTK_WIDGET(gtk_builder_get_object(builder,"history_button"));
+    data->file_history_name=NULL;
     gtk_widget_set_cursor_from_name(data->button, "pointer");
     gtk_widget_set_cursor_from_name(data->last_button, "pointer");
     gtk_widget_set_cursor_from_name(data->choice_button_phone, "pointer");
     gtk_widget_set_cursor_from_name(data->choice_button_card, "pointer");
     gtk_widget_set_cursor_from_name(data->last_button, "pointer");
-    
+    gtk_widget_set_cursor_from_name(data->history_button,"pointer");
+    gtk_widget_set_cursor_from_name(data->transfer_button, "pointer");
+    gtk_widget_set_cursor_from_name(data->take_money_button, "pointer");
+    gtk_widget_set_cursor_from_name(data->give_money_button, "pointer");
+    gtk_widget_set_cursor_from_name(data->translate_button_dialog, "pointer");
+    gtk_widget_set_cursor_from_name(data->transfer_button_change, "pointer");
+    gtk_widget_set_cursor_from_name(data->take_money_button_dialog,"pointer");
+    gtk_widget_set_cursor_from_name(data->give_money_button_dialog, "pointer");
+
     g_signal_connect(window, "destroy",G_CALLBACK(close_and_save),data);
     g_signal_connect(data->last_button, "clicked", G_CALLBACK(click_last),data);
     g_signal_connect(data->button, "clicked", G_CALLBACK(button_clicked), data);
@@ -491,6 +521,7 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     g_signal_connect(data->take_money_button_dialog,"clicked",G_CALLBACK(balance_low_dialog_button),data);
     g_signal_connect(data->translate_button_dialog, "clicked", G_CALLBACK(balance_translate_dialog_button),data);
     g_signal_connect(data->transfer_button_change,"clicked",G_CALLBACK(transfer_button_change_press),data);
+    g_signal_connect(data->history_button,"clicked",G_CALLBACK(open_log_file),data);
     g_object_unref(builder);
 
     gtk_stack_set_visible_child(GTK_STACK(data->main_stack), data->login_page);
