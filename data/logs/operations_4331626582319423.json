@@ -1,0 +1,49 @@
+[{
+		"targetCard":	"89523555517",
+		"balance_before":	0,
+		"balance_after":	1000,
+		"amount":	1000,
+		"output_opType":	"TRANSFER_IN",
+		"op_type":	2,
+		"created_date":	"2025-12-05 00:21:09"
+	}, {
+		"targetCard":	"4331626582319423",
+		"balance_before":	1000,
+		"balance_after":	900,
+		"amount":	100,
+		"output_opType":	"OP_WITHDRAW",
+		"op_type":	0,
+		"created_date":	"2025-12-05 15:41:35"
+	}, {
+		"targetCard":	"4331626582319423",
+		"balance_before":	900,
+		"balance_after":	500,
+		"amount":	400,
+		"output_opType":	"OP_WITHDRAW",
+		"op_type":	0,
+		"created_date":	"2025-12-05 15:42:38"
+	}, {
+		"targetCard":	"4331626582319423",
+		"balance_before":	500,
+		"balance_after":	1000,
+		"amount":	500,
+		"output_opType":	"OP_REPLENISH",
+		"op_type":	1,
+		"created_date":	"2025-12-05 23:25:17"
+	}, {
+		"targetCard":	"4331626582319423",
+		"balance_before":	1000,
+		"balance_after":	800,
+		"amount":	200,
+		"output_opType":	"OP_WITHDRAW",
+		"op_type":	0,
+		"created_date":	"2025-12-05 23:26:48"
+	}, {
+		"targetCard":	"4331626582319423",
+		"balance_before":	800,
+		"balance_after":	1144,
+		"amount":	344,
+		"output_opType":	"OP_REPLENISH",
+		"op_type":	1,
+		"created_date":	"2025-12-05 23:27:04"
+	}]

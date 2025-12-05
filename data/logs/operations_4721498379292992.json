@@ -1,0 +1,25 @@
+[{
+		"targetCard":	"4721498379292992",
+		"balance_before":	500,
+		"balance_after":	2500,
+		"amount":	2000,
+		"output_opType":	"OP_REPLENISH",
+		"op_type":	1,
+		"created_date":	"2025-12-05 21:10:07"
+	}, {
+		"targetCard":	"4721498379292992",
+		"balance_before":	2500,
+		"balance_after":	2480,
+		"amount":	20,
+		"output_opType":	"OP_WITHDRAW",
+		"op_type":	0,
+		"created_date":	"2025-12-05 21:10:21"
+	}, {
+		"targetCard":	"89523555517",
+		"balance_before":	2480,
+		"balance_after":	480,
+		"amount":	2000,
+		"output_opType":	"TRANSFER_OUT",
+		"op_type":	3,
+		"created_date":	"2025-12-05 21:12:48"
+	}]

@@ -12,5 +12,6 @@ int load_Database_from_json(const char *filename, Database *db);
 char *read_file_to_string(const char *filename);
 cJSON *card_to_json(const Card *card);
 Card *json_to_card(const cJSON *json_card);
+int write_file(const char *filename, const char *content);
 
 #endif

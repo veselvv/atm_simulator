@@ -413,7 +413,7 @@
                                 
                                 
                                 <child>
-                                    <object class="GtkButton">
+                                    <object class="GtkButton" id="history_button">
                                         <child>
                                             <object class="GtkBox"> 
                                                 <property name="halign">fill</property>

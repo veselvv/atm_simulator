@@ -11,7 +11,7 @@ int main() {
     // Тест создания базы данных
     Database *db = create_database();
     printf("Загружаем базу данных...\n");
-    if (load_Database_from_json("test_database.json", db)){
+    if (load_Database_from_json("../data/test_database.json", db)){
         printf("База данных успешно загруженна!\n");
     }
     else{
@@ -42,7 +42,7 @@ int main() {
             
             case 1:{
                 printf("Сохраняем базу данных...\n");
-                if (save_db_to_jsoon(db, "test_database.json")){
+                if (save_db_to_jsoon(db, "../data/test_database.json")){
                     printf("База данных успешно сохранена!");
                 }
                 else{

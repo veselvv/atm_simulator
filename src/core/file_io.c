@@ -105,7 +105,7 @@ Card *json_to_card(const cJSON *json_card){
     if (cJSON_IsNumber(item)){
         card->is_blocked = item->valueint;
     }
-   item = cJSON_GetObjectItemCaseSensitive(json_card, "created_date");
+    item = cJSON_GetObjectItemCaseSensitive(json_card, "created_date");
     if (cJSON_IsString(item) && item->valuestring != NULL) {
         struct tm tm = {0};
         int year, month, day, hour, min, sec;
@@ -210,4 +210,21 @@ int load_Database_from_json(const char *filename, Database *db){
     free(json_string);
     cJSON_Delete(root);
     return 1;
+}
+
+int write_file(const char *filename, const char *content) {
+    if (filename == NULL || content == NULL) {
+        return 0;
+    }
+    
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        return 0;
+    }
+    
+    size_t len = strlen(content);
+    size_t written = fwrite(content, 1, len, file);
+    fclose(file);
+    
+    return (written == len) ? 1 : 0;
 }

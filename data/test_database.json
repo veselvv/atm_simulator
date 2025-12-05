@@ -1,0 +1,53 @@
+[{
+		"card_number":	"4552602388080530",
+		"cvv":	"996",
+		"expiry_date":	"12/2029",
+		"holder_name":	"vasiliy",
+		"login":	"veselvv12@yandex.ru",
+		"phone_number":	"89523555517",
+		"pin":	"1234",
+		"balance":	13500,
+		"is_blocked":	0,
+		"pin_atempts":	3,
+		"gender":	"M",
+		"created_date":	"2025-12-03 16:50:27"
+	}, {
+		"card_number":	"4331626582319423",
+		"cvv":	"636",
+		"expiry_date":	"12/2029",
+		"holder_name":	"Vasia",
+		"login":	"v",
+		"phone_number":	"88888888888",
+		"pin":	"1234",
+		"balance":	1144,
+		"is_blocked":	0,
+		"pin_atempts":	3,
+		"gender":	"M",
+		"created_date":	"2025-12-04 19:20:25"
+	}, {
+		"card_number":	"4263954688911598",
+		"cvv":	"116",
+		"expiry_date":	"12/2029",
+		"holder_name":	"so",
+		"login":	"so",
+		"phone_number":	"99999999999",
+		"pin":	"1234",
+		"balance":	500,
+		"is_blocked":	0,
+		"pin_atempts":	3,
+		"gender":	"F",
+		"created_date":	"2025-12-04 19:20:39"
+	}, {
+		"card_number":	"4721498379292992",
+		"cvv":	"452",
+		"expiry_date":	"12/2029",
+		"holder_name":	"l",
+		"login":	"l",
+		"phone_number":	"77777777777",
+		"pin":	"1234",
+		"balance":	480,
+		"is_blocked":	0,
+		"pin_atempts":	3,
+		"gender":	"M",
+		"created_date":	"2025-12-04 19:39:33"
+	}]
