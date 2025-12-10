@@ -32,7 +32,7 @@ Thumbs.db
 build/
 bin/
 obj/
-
+data/
 # Executables
 *.exe
 *.out
