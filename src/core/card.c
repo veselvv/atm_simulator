@@ -18,24 +18,17 @@ Card *create_card(const char *pin,
     strcpy(new_card->holder_name, name);
     strcpy(new_card->login, login);
     strcpy(new_card->phone_number, phone_number);
-
     //safety
     strcpy(new_card->pin, pin);
     new_card->is_blocked=False;
     new_card->pin_atempts=3;
-
     //Balance
     new_card->balance = 0;
-
     //OTHER
     generate_random_cvv(new_card->cvv);
     new_card->created_date = time(NULL);
     generate_expiry_date(new_card->expiry_date);
     strcpy(new_card->gender,gender);
-
-
-
-    
     return new_card;
 }
 

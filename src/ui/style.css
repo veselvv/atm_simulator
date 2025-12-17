@@ -73,7 +73,6 @@
     border: none;
     transition: all 0.1s;
     border-radius: 0px;
-    cursor: pointer;
     
 }
 
@@ -206,3 +205,9 @@
     font-weight: bold;
     color:#000;
 }
+
+
+.Entry_login_validation{
+    border: 1px solid red;
+}
+

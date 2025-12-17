@@ -11,7 +11,7 @@ BUILD_DIR = build
 CORE_BUILD_DIR = $(BUILD_DIR)/core
 
 # Исходные файлы
-MAIN_SRC = $(SRC_DIR)/main.c
+MAIN_SRC = $(SRC_DIR)/admin.c
 CORE_SRCS = $(CORE_DIR)/card.c $(CORE_DIR)/database.c $(CORE_DIR)/file_io.c \
             $(CORE_DIR)/operation.c $(CORE_DIR)/logging_operation.c \
             $(LIBS_DIR)/cJSON.c
@@ -21,7 +21,7 @@ CORE_HEADERS = $(CORE_DIR)/card.h $(CORE_DIR)/database.h $(CORE_DIR)/file_io.h \
                $(LIBS_DIR)/cJSON.h
 
 # Объектные файлы
-MAIN_OBJ = $(BUILD_DIR)/main.o
+MAIN_OBJ = $(BUILD_DIR)/admin.o
 CARD_OBJ = $(CORE_BUILD_DIR)/card.o
 DATABASE_OBJ = $(CORE_BUILD_DIR)/database.o
 FILE_IO_OBJ = $(CORE_BUILD_DIR)/file_io.o

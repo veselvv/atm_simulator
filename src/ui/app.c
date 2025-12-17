@@ -22,6 +22,7 @@ typedef enum{
 
 
 typedef struct{
+    GtkWindow *main_window;
     GtkWidget *Entry_pass;
     GtkWidget *Entry_login;
     Database *db;
@@ -40,9 +41,8 @@ typedef struct{
     GtkWidget *main_card_label;
     LoginMode current_mode;
 
-    
     GtkWidget *animation_page;
-
+    
     GtkWidget *transfer_button;
     GtkWidget *give_money_button;
     GtkWidget *main_gender_label;
@@ -69,9 +69,44 @@ typedef struct{
 
 
 
-
+    GtkWidget *history_labels_container;
 }AppData;
- 
+
+
+// static void add_operrations_labels(gpointer userdata){
+//     AppData *data = (AppData*)userdata;
+    
+
+
+
+
+// }
+
+
+
+
+
+
+static void show_alert(GtkWindow *parent, const char *message) {
+    GtkAlertDialog *dialog = gtk_alert_dialog_new(message);
+    gtk_alert_dialog_show(dialog, parent);
+    g_object_unref(dialog);
+}
+
+static void on_text_changed(GtkWidget *Entry, gpointer userdata){
+    AppData *data = (AppData*)userdata;
+    const char *text = gtk_editable_get_text(GTK_EDITABLE(data->Entry_login));
+    switch(data->current_mode){
+        case CARD_MODE:
+            if(strlen(text)<16){
+                gtk_widget_add_css_class(GTK_WIDGET(data->Entry_login), "Entry_login_validation");
+            }
+            else{
+                gtk_widget_remove_css_class(GTK_WIDGET(data->Entry_login), "Entry_login_validation");
+            }
+    }
+}
+
 
 
 static void open_log_file(GtkWidget *btn, gpointer userdata){
@@ -188,21 +223,31 @@ static void balance_up_dialog_button(GtkWidget *btn, gpointer userdata){
     }
 
     if(value!=-1){
-        replenish_balance(data->current_card, value);
-        if (save_db_to_jsoon(data->db, data->data_path)) {
-            g_print("Данные успешно сохранены\n");
-        } else {
-            g_print("Ошибка сохранения данных!\n");
+        if(replenish_balance(data->current_card, value)){
+            if (save_db_to_jsoon(data->db, data->data_path)) {
+                g_print("Данные успешно сохранены\n");
+            } else {
+                g_print("Ошибка сохранения данных!\n");
+            }
+            double balance = data->current_card->balance;
+            char balance_str[50];
+            snprintf(balance_str, sizeof(balance_str), "%.2fР", balance);
+            gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str);
+            gtk_editable_set_text(GTK_EDITABLE(data->give_money_entry_dialog),"");
+            on_dialog_close_request(GTK_WINDOW(data->give_money_dialog));
+            show_alert(data->main_window, "Операция выполнена успешно");
         }
-        double balance = data->current_card->balance;
-        char balance_str[50];
-        snprintf(balance_str, sizeof(balance_str), "%.2fР", balance);
-        gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str);
-        gtk_editable_set_text(GTK_EDITABLE(data->give_money_entry_dialog),"");
-        on_dialog_close_request(GTK_WINDOW(data->give_money_dialog));
+        else{
+            gtk_editable_set_text(GTK_EDITABLE(data->give_money_entry_dialog),"");
+            on_dialog_close_request(GTK_WINDOW(data->give_money_dialog));
+            show_alert(data->main_window, "Неудалось выполнить операцию");
+        }
+        
 
     }
     else{
+        gtk_editable_set_text(GTK_EDITABLE(data->give_money_entry_dialog),"");
+        show_alert(data->main_window, "Неудалось выполнить операцию");
         printf("Не удалось преобразовать строку в формат double\n");
     }
 
@@ -215,21 +260,31 @@ static void balance_low_dialog_button(GtkWidget *btn, gpointer userdata){
         return;
     }
     if(value!=-1){
-        withdraw_balance(data->current_card, value);
-        if (save_db_to_jsoon(data->db, data->data_path)) {
-            g_print("Данные успешно сохранены\n");
-        } else {
-            g_print("Ошибка сохранения данных!\n");
+        if(withdraw_balance(data->current_card, value)){
+            if (save_db_to_jsoon(data->db, data->data_path)) {
+                g_print("Данные успешно сохранены\n");
+            } else {
+                g_print("Ошибка сохранения данных!\n");
+            }
+            double balance = data->current_card->balance;
+            char balance_str[50];
+            snprintf(balance_str, sizeof(balance_str), "%.2fР", balance);
+            gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str);
+            gtk_editable_set_text(GTK_EDITABLE(data->take_money_entry_dialog),"");
+            on_dialog_close_request(GTK_WINDOW(data->take_money_dialog));
+            show_alert(data->main_window, "Операция выполнена успешно");
         }
-        double balance = data->current_card->balance;
-        char balance_str[50];
-        snprintf(balance_str, sizeof(balance_str), "%.2fР", balance);
-        gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str);
-        gtk_editable_set_text(GTK_EDITABLE(data->take_money_entry_dialog),"");
-        on_dialog_close_request(GTK_WINDOW(data->take_money_dialog));
+        else{
+            gtk_editable_set_text(GTK_EDITABLE(data->take_money_entry_dialog),"");
+            on_dialog_close_request(GTK_WINDOW(data->take_money_dialog));
+            show_alert(data->main_window, "Неудалось выполнить операцию");
+
+        }
 
     }
     else{
+        show_alert(data->main_window, "Введены невалидные данные");
+        gtk_editable_set_text(GTK_EDITABLE(data->take_money_entry_dialog),"");
         printf("Не удалось преобразовать строку в формат double\n");
     }
     
@@ -242,11 +297,14 @@ static void transfer_button_change_press(GtkWidget *btn, gpointer userdata){
     case TRANSFER_CARD_MODE:
         data->current_transfer_mode = TRANSFER_PHONE_MODE;
         gtk_entry_set_placeholder_text(GTK_ENTRY(data->translate_entry_card_dialog), "phone number");
+        gtk_button_set_label(GTK_BUTTON(btn), "Перевод по номеру карты");
         break;
     
     case TRANSFER_PHONE_MODE:
         data->current_transfer_mode=TRANSFER_CARD_MODE;
         gtk_entry_set_placeholder_text(GTK_ENTRY(data->translate_entry_card_dialog), "card number");
+        gtk_button_set_label(GTK_BUTTON(btn), "Перевод по номеру телефона");
+
         break;
     default:
         g_print("Не удалось сменить мод\n");
@@ -268,12 +326,44 @@ static void balance_translate_dialog_button(GtkWidget *btn, gpointer userdata){
         switch (data->current_transfer_mode){
             case  TRANSFER_CARD_MODE:
             card2 = find_card_by_CardNumber(data->db, text_entry_card);
-            transform_balance_by_CardNumber(card1,card2,value);
+            if(transform_balance_by_CardNumber(card1,card2,value)){
+                double balance1 = card1->balance;
+                char balance_str1[50];
+                snprintf(balance_str1, sizeof(balance_str1), "%.2fР", balance1);
+                gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str1);
+                gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_card_dialog),"");
+                gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_money_dialog),"");
+                on_dialog_close_request(GTK_WINDOW(data->translate_dialog));
+                show_alert(data->main_window, "Операция выполнена успешно");
+
+            }
+            else{
+                gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_card_dialog),"");
+                gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_money_dialog),"");
+                on_dialog_close_request(GTK_WINDOW(data->translate_dialog));
+                show_alert(data->main_window, "Неудалось выполнить операцию");
+            }
             break;
         
         case TRANSFER_PHONE_MODE:
             card2 = find_card_by_PhoneNumber(data->db,text_entry_card);
-            transform_balance_by_PhoneNumber(card1,card2,value);
+            if(transform_balance_by_PhoneNumber(card1,card2,value)){
+                double balance1 = card1->balance;
+                char balance_str1[50];
+                snprintf(balance_str1, sizeof(balance_str1), "%.2fР", balance1);
+                gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str1);
+                gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_card_dialog),"");
+                gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_money_dialog),"");
+                on_dialog_close_request(GTK_WINDOW(data->translate_dialog));
+                show_alert(data->main_window, "Операция выполнена успешно");
+                
+            }
+            else{
+                gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_card_dialog),"");
+                gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_money_dialog),"");
+                on_dialog_close_request(GTK_WINDOW(data->translate_dialog));
+                show_alert(data->main_window, "Неудалось выполнить операцию");
+            }
             break;
         default:
             break;
@@ -283,17 +373,13 @@ static void balance_translate_dialog_button(GtkWidget *btn, gpointer userdata){
         } else {
             g_print("Ошибка сохранения данных!\n");
         }
-        double balance1 = card1->balance;
-        char balance_str1[50];
-        snprintf(balance_str1, sizeof(balance_str1), "%.2fР", balance1);
-        gtk_label_set_text(GTK_LABEL(data->main_balance_label), balance_str1);
-        gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_card_dialog),"");
-        gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_money_dialog),"");
-        on_dialog_close_request(GTK_WINDOW(data->translate_dialog));
-
     }
     else{
+        show_alert(data->main_window, "Введены невалидные данные");
+        gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_money_dialog),"");
+        gtk_editable_set_text(GTK_EDITABLE(data->translate_entry_card_dialog),"");
         printf("Не удалось преобразовать строку в формат double\n");
+
     }
     
 
@@ -375,6 +461,11 @@ static void button_clicked(GtkWidget *btn, gpointer userdata){
             break;
     }
     if(card!=NULL){
+        if(card->is_blocked==1){
+            printf("Нельзя войти в личный кабинет, ваша карта заблокирована\n");
+            show_alert(data->main_window,"Нельзя войти в личный кабинет, ваша карта заблокирована");
+            return;
+        }
         if((strcmp(card->pin, pass) == 0)&&card->pin_atempts>0&&card->is_blocked!=1){
             print_card_info(card);
             card->pin_atempts=3;
@@ -420,11 +511,23 @@ static void button_clicked(GtkWidget *btn, gpointer userdata){
             card->is_blocked=1;
         }
         else{
+            char message[500];
             card->pin_atempts-=1;
+            snprintf(message, 500, "Неправильный PIN-код\n Оставшееся количество попыток для входа: %d", card->pin_atempts);
+            show_alert(data->main_window, message);
+            gtk_editable_set_text(GTK_EDITABLE(data->Entry_pass), "");
+
+
             if(card->pin_atempts!=0){
                 g_print("Количество попыток оставшееся для входа: %d\n", card->pin_atempts);
             }
         }
+    }else{
+        printf("Карта не найдена\n");
+        show_alert(data->main_window,"Карта не найдена");
+        gtk_editable_set_text(GTK_EDITABLE(data->Entry_login), "");
+        gtk_editable_set_text(GTK_EDITABLE(data->Entry_pass), "");
+
     }
 }
 
@@ -435,7 +538,7 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     GObject *window = gtk_builder_get_object(builder, "window");
 
     AppData *data = g_new(AppData, 1);
-    data->data_path="/home/vvv/Desktop/guap/atm_simulator/data/test_database.json";
+    data->data_path="../data/test_database.json";
     Database *db = create_database();
     if (db) {
         g_print("Загружаем базу данных...\n");
@@ -447,6 +550,7 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
         }
     }
     data->db=db;
+    data->main_window = GTK_WINDOW(window);
     data->main_stack = GTK_WIDGET(gtk_builder_get_object(builder, "main-stack"));
     gtk_stack_set_transition_type(GTK_STACK(data->main_stack), GTK_STACK_TRANSITION_TYPE_CROSSFADE);
     gtk_stack_set_transition_duration(GTK_STACK(data->main_stack), 200);
@@ -485,6 +589,7 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     data->current_transfer_mode=TRANSFER_CARD_MODE;
     data->history_button = GTK_WIDGET(gtk_builder_get_object(builder,"history_button"));
     data->file_history_name=NULL;
+    data->history_labels_container=GTK_WIDGET(gtk_builder_get_object(builder,"history_labels_container"));
     gtk_widget_set_cursor_from_name(data->button, "pointer");
     gtk_widget_set_cursor_from_name(data->last_button, "pointer");
     gtk_widget_set_cursor_from_name(data->choice_button_phone, "pointer");
@@ -522,6 +627,12 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     g_signal_connect(data->translate_button_dialog, "clicked", G_CALLBACK(balance_translate_dialog_button),data);
     g_signal_connect(data->transfer_button_change,"clicked",G_CALLBACK(transfer_button_change_press),data);
     g_signal_connect(data->history_button,"clicked",G_CALLBACK(open_log_file),data);
+
+
+
+
+
+    g_signal_connect(data->Entry_login, "changed", G_CALLBACK(on_text_changed), data);
     g_object_unref(builder);
 
     gtk_stack_set_visible_child(GTK_STACK(data->main_stack), data->login_page);

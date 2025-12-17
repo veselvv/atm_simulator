@@ -9,31 +9,31 @@
 
 
 
-void transform_balance_by_CardNumber(Card *card1,  Card *card2, const double balance){
+int transform_balance_by_CardNumber(Card *card1,  Card *card2, const double balance){
     
     if (card1==NULL||card2==NULL){
         printf("Err: Unvalid data\n");
-        return;
+        return 0;
     }
     if (card1==NULL||card2==NULL){    
-        return;
+        return 0;
     }
 
     if (card1->is_blocked==1){
         printf("Нельзя выполнить перевод с заблокированной карты.\n");
-        return;
+        return 0;
     }
     if (card2->is_blocked==1){
         printf("Нельзя выполнить перевод на заблокированную карту.\n");
-        return;
+        return 0;
     }
     if (balance<=0){
         printf("Баланс должен быть больше 0.\n");
-        return;
+        return 0;
     }
     if (card1->balance<balance){
         printf("Неудалось выполнить перевод, недостаточно средств.\n");
-        return;
+        return 0;
     }
     Operation *op1 = malloc(sizeof(Operation));
     Operation *op2 = malloc(sizeof(Operation));
@@ -41,7 +41,7 @@ void transform_balance_by_CardNumber(Card *card1,  Card *card2, const double bal
         printf("Ошибка выделения памяти для операций\n");
         if (op1) free(op1);
         if (op2) free(op2);
-        return;
+        return 0;
     }
 
     // Инициализируем память нулями
@@ -70,30 +70,31 @@ void transform_balance_by_CardNumber(Card *card1,  Card *card2, const double bal
 
     free(op1);
     free(op2);
+    return 1;
 }
 
 
-void transform_balance_by_PhoneNumber(Card *card1,  Card *card2, const double balance){
+int transform_balance_by_PhoneNumber(Card *card1,  Card *card2, const double balance){
     if (card1==NULL||card2==NULL){    
         printf("Не удалось найти карту\n");
-        return;
+        return 0;
     }
 
     if (card1->is_blocked==1){
         printf("Нельзя выполнить перевод с заблокированной карты.\n");
-        return;
+        return 0;
     }
     if (card2->is_blocked==1){
         printf("Нельзя выполнить перевод на заблокированную карту.\n");
-        return;
+        return 0;
     }
     if (balance<=0){
         printf("Баланс для перевода должен быть больше 0.\n");
-        return;
+        return 0;
     }
     if (card1->balance<balance){
         printf("Неудалось выполнить перевод, недостаточно средств.\n");
-        return;
+        return 0;
     }
         Operation *op1 = malloc(sizeof(Operation));
     Operation *op2 = malloc(sizeof(Operation));
@@ -101,7 +102,7 @@ void transform_balance_by_PhoneNumber(Card *card1,  Card *card2, const double ba
         printf("Ошибка выделения памяти для операций\n");
         if (op1) free(op1);
         if (op2) free(op2);
-        return;
+        return 0;
     }
 
     // Инициализируем память нулями
@@ -129,27 +130,28 @@ void transform_balance_by_PhoneNumber(Card *card1,  Card *card2, const double ba
     append_operation_to_log(card2,op2);
     free(op1);
     free(op2);
+    return 1;
 }
 
 
-void replenish_balance(Card *card, const double add_money){
+int replenish_balance(Card *card, const double add_money){
     if (card==NULL){
         printf("Err: не удалось найти карту!\n");
-        return;
+        return 0;
     }
 
     if(card->is_blocked==1){
         printf("Err: Нельзя пополнить баланс заблокированной карты\n");
-        return ;
+        return 0;
     }
     if(add_money<=0){
         printf("Err: Сумма для пополнения должна быть положительной!\n");
-        return;
+        return 0;
     }
     Operation *op=malloc(sizeof(Operation));
     if (op==NULL){
         printf("Не удалось выделить память под операцию\n");
-        return;
+        return 0;
     }
     memset(op,0,sizeof(Operation));
     op->balance_before=card->balance;
@@ -163,35 +165,35 @@ void replenish_balance(Card *card, const double add_money){
     append_operation_to_log(card,op);
     printf("Пополнение баланса выполнено успешно!\n");
     free(op);
-    return;
+    return 1;
 }
 
 
 
-void withdraw_balance(Card *card, double witdraw_sum){    
+int withdraw_balance(Card *card, double witdraw_sum){    
     if(card==NULL){
         printf("Err: не удалось найти карту\n");
-        return;
+        return 0;
     }
 
     if(card->is_blocked==1){
         printf("Err: Нельзя снять деньги с заблокированной карты\n");
-        return;
+        return 0;
     }
 
     if(witdraw_sum<=0){
         printf("Err: сумма для снятия должна быть положительная!\n");
-        return ;
+        return 0;
     }
 
     if(card->balance<witdraw_sum){
         printf("Err: не удалось снять деньги, на счете недостаточно средст, ддя осуществления данной операции!\n");
-        return;
+        return 0;
     }
     Operation *op = malloc(sizeof(Operation));
     if(op==NULL){
         printf("Ошибка выделения памяти под операцию\n");
-        return;
+        return 0;
     }
     memset(op,0,sizeof(Operation));
     op->balance_before=card->balance;
@@ -205,5 +207,6 @@ void withdraw_balance(Card *card, double witdraw_sum){
     append_operation_to_log(card,op);
     free(op);
     printf("Снятие денег с баланса выполнено успешно!\n");
+    return 1;
 
 }

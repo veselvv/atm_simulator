@@ -888,4 +888,114 @@
         </child>
     </object>
 
+    <object class="GtkDialog" id="history_dialog">
+        <property name="title">История операций</property>
+        <property name="transient-for">window</property>
+        <property name="modal">true</property>
+        <property name="default-width">300</property>
+        <property name="default-height">500</property>
+        <property name="resizable">false</property>
+        <property name="deletable">true</property>
+        <child>
+            <object class="GtkBox">
+                <child>
+                    <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">15</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="valign">GTK_ALIGN_START</property>
+                                <property name="orientation">vertical</property>
+                                <style>
+                                    <class name="main-head"/>
+                                </style>
+                                <!-- Line-->
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="halign">fill</property>
+                                        <style>
+                                            <class name="line-head"/>
+                                        </style>
+                                    </object>
+                                </child>
+            
+                                <!-- Krug-->
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="halign">GTK_ALIGN_CENTER</property>
+                                        <property name="valign">center</property>  <!-- ДОБАВЬ -->
+                                        <property name="orientation">vertical</property>  <!-- ИЗМЕНИ НА vertical -->
+                                        <style>
+                                            <class name="circle-head"/>
+                                        </style>
+                                        <child>
+                                            <object class="GtkImage">
+                                                <property name="file">pic/money-saving_9037723.png</property>
+                                                <property name="pixel-size">100</property>
+                                                <property name="halign">center</property>
+                                                <property name="valign">center</property>
+                                                </object>
+                                            </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkLabel">
+                                <property name="label">История операций</property>
+                                <style>
+                                    <class name="dialog-label"/>
+                                </style>
+                            </object>
+                        </child>
+                                
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">0</property>
+                        <child>
+                            <object class="GtkBox" id="status_bar">
+                                <property name="orientation">horizontal</property>
+                                <property name="spacing">15</property>
+                                <property name="margin-start">15</property>
+                                <property name="margin-end">15</property>
+                                <property name="hexpand">true</property>
+                                <child>
+                                    <object class="GtkLabel" id="status_bar_person_count">
+                                        <property name="halign">center</property>
+                                        <property name="label">unstate</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+        
+        
+                        <child>
+                            <object class="GtkScrolledWindow">
+                                <property name="vexpand">true</property>
+                                <property name="hexpand">true</property>
+                                <property name="hscrollbar-policy">never</property>
+                                <property name="vscrollbar-policy">automatic</property>
+                                <child>
+                                    <object class="GtkBox" id="history_labels_container">
+                                        <property name="halign">fill</property>
+                                        <property name="valign">fill</property>
+                                        <property name="hexpand">true</property>
+                                        <property name="vexpand">true</property>
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">20</property>
+                                        <property name="margin-start">15</property>
+                                        <property name="margin-end">15</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
 </interface>
