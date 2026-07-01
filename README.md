@@ -43,37 +43,6 @@ ATM Simulator — это десктопное приложение для Linux,
 | **Отладка** | gdb, valgrind |
 
 ---
-
-## 📁 Структура проекта
-atm-simulator/
-├── Makefile # Сборка проекта
-├── install-deps.sh # Установка зависимостей
-├── data/
-│ └── test_database.json # База данных (карты, счета)
-├── logs/
-│ └── operations_*.json # Логи операций по картам
-├── build/ # Сборка (создаётся автоматически)
-│ ├── myapp # GUI приложение
-│ ├── admin # Административная консоль
-│ └── *.o # Объектные файлы
-└── src/
-├── admin.c # Точка входа админки
-├── core/ # Ядро проекта
-│ ├── card.c/h # Работа с картами
-│ ├── database.c/h # Работа с базой данных
-│ ├── file_io.c/h # Сериализация в JSON
-│ ├── operation.c/h # Финансовые операции
-│ ├── logging_operation.c/h # Логирование операций
-│ └── libs/
-│ └── cJSON.c/h # Парсинг JSON
-└── ui/ # GTK4 интерфейс
-├── app.c # Точка входа GUI
-├── builder.ui # Описание интерфейса
-├── style.css # Стили
-└── pic/ # Иконки и изображения
-
----
-
 ## 🚀 Установка и запуск
 
 ### 1. Установите зависимости
@@ -82,4 +51,68 @@ atm-simulator/
 chmod +x install-deps.sh
 ./install-deps.sh
 ```
+Или вручную (Ubuntu/Debian):
+
+```bash
+sudo apt update
+sudo apt install build-essential libgtk-4-dev pkg-config valgrind make
+```
+### 2. Соберите проект
+
+```bash
+make
+```
+Makefile автоматически создаст папки data/ и logs/.
+
+### 3. Запустите приложение
+
+```bash
+# Графический интерфейс (из корня проекта)
+make run
+# или
+cd build && ./myapp
+
+# Административная консоль
+make run-admin
+# или
+cd build && ./admin
+```
+
+---
+
+## 🔧 Команды Makefile
+
+| Команда | Описание |
+|-----------|------------|
+| **make** | Собрать всё (myapp + admin) |
+| **make run** | Запустить GUI |
+| **make run-admin** | 	Запустить админку |
+| **make clean** | Очистить объектные файлы и бинарники |
+| **make distclean** | Удалить папку build/ |
+|**make clean-data**| Удалить data/ и logs/ |
+|**make rebuild**| Полная пересборка |
+
+---
+
+## 📂 Хранение данных
+
+**data/test_database.json** — основная база данных (карты, балансы, PIN-коды)
+
+**logs/operations_XXXXX.json** — история операций для каждой карты
+
+---
+
+## 🔐 Безопасность
+
+- PIN-код хранится в открытом виде (учебный проект, для демонстрации)
+- Карта блокируется после 3 неудачных попыток ввода PIN
+- Все операции логируются с указанием времени и суммы
+
+## 📸 Интерфейс
+| Главное окно | Личный кабинет | Админисративная панель |
+|--------------|----------------|------------------------|
+| <img width="200" src="https://github.com/user-attachments/assets/e6e117f2-ef24-4765-91a1-ebfda5a9a039" /> | <img width="200" src="https://github.com/user-attachments/assets/0985d1f2-aeec-41e6-8c13-3a83d359cfaf" /> | <img width="300" src="https://github.com/user-attachments/assets/58884a92-1586-44bc-bc42-21fb2dde8724" /> |
+
+
+
 
