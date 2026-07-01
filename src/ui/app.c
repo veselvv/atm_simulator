@@ -495,7 +495,7 @@ static void button_clicked(GtkWidget *btn, gpointer userdata){
             char *filename = malloc(sizeof(char)*256);
             if(filename!=NULL){
                 snprintf(filename, sizeof(char)*256, 
-                        "../../data/logs/operations_%s.json", data->current_card->card_number);
+                        "../logs/operations_%s.json", data->current_card->card_number);
                 data->file_history_name=filename;
             }
             snprintf(balance_str, sizeof(balance_str), "%.2fР", balance);
