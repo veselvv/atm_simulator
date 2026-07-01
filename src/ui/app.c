@@ -121,7 +121,7 @@ static gboolean load_css(void) {
     gboolean success = FALSE;
     
     // Загружаем CSS файл
-    gtk_css_provider_load_from_path(provider, "style.css");
+    gtk_css_provider_load_from_path(provider, "../src/ui/style.css");
         // Применяем CSS ко всему приложению
     gtk_style_context_add_provider_for_display(
             gdk_display_get_default(),
@@ -534,7 +534,7 @@ static void button_clicked(GtkWidget *btn, gpointer userdata){
 static void app_activate (GtkApplication *app, gpointer user_data) {
     load_css();
     
-    GtkBuilder *builder = gtk_builder_new_from_file("builder.ui");
+    GtkBuilder *builder = gtk_builder_new_from_file("../src/ui/builder.ui");
     GObject *window = gtk_builder_get_object(builder, "window");
 
     AppData *data = g_new(AppData, 1);
@@ -640,6 +640,9 @@ static void app_activate (GtkApplication *app, gpointer user_data) {
     gtk_window_set_application(GTK_WINDOW(window), app);
     gtk_window_present(GTK_WINDOW(window));
 }
+
+
+
 int main (int argc, char **argv)
 {
     GtkApplication *app = gtk_application_new ("com.metanit", G_APPLICATION_DEFAULT_FLAGS);
