@@ -158,7 +158,7 @@ int main() {
 
         }
     }
-    save_db_to_jsoon(db,"test_database.json");
+    save_db_to_jsoon(db,"../data/test_database.json");
     free_Database(db);
 
     
