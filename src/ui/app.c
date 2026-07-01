@@ -473,14 +473,14 @@ static void button_clicked(GtkWidget *btn, gpointer userdata){
             double balance = data->current_card->balance;
             char balance_str[50];
             if(strcmp(card->gender,"F")==0){
-                gtk_image_set_from_file(GTK_IMAGE(data->person_image),"pic/women.png");
+                gtk_image_set_from_file(GTK_IMAGE(data->person_image),"../src/ui/pic/women.png");
                 gtk_label_set_text(GTK_LABEL(data->main_gender_label),"Женский");
 
             }else if(strcmp(card->gender,"f")==0){
-                gtk_image_set_from_file(GTK_IMAGE(data->person_image),"pic/women.png");
+                gtk_image_set_from_file(GTK_IMAGE(data->person_image),"../src/ui/pic/women.png");
                 gtk_label_set_text(GTK_LABEL(data->main_gender_label),"Женский");
             }else{
-                gtk_image_set_from_file(GTK_IMAGE(data->person_image),"pic/man.png");
+                gtk_image_set_from_file(GTK_IMAGE(data->person_image),"../src/ui/pic/man.png");
                 gtk_label_set_text(GTK_LABEL(data->main_gender_label),"Мужской");
 
             }
