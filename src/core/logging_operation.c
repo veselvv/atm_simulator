@@ -110,7 +110,7 @@ int append_operation_to_log(Card *card, Operation *op) {
     // Имя файла
     char filename[256];
     snprintf(filename, sizeof(filename), 
-             "../../data/logs/operations_%s.json", card->card_number);
+             "..//logs/operations_%s.json", card->card_number);
     
     // Читаем старые данные
     cJSON *root = NULL;
